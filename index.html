@@ -297,6 +297,20 @@
     font-family: var(--mono); font-size: 11px; color: var(--text-dim);
   }
 
+  /* AJOUT : liens Professionnel / Formation dans Réalisations */
+  .subtabs{ display:flex; gap:8px; flex-wrap:wrap; margin: 0 0 26px; }
+  .subtab{
+    font-family: var(--mono); font-size: 12px; font-weight:500;
+    background: var(--bg-raised); color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 16px; cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .subtab:hover{ color: var(--text); border-color:#3a4657; }
+  .subtab.active{ color: var(--bg); background: var(--led-green); border-color: var(--led-green); }
+  .sub-panel{ display:none; }
+  .sub-panel.active{ display:block; animation: fadein .25s ease; }
+
   .fill-me{ color: var(--led-amber); font-style: italic; }
 </style>
 </head>
@@ -307,7 +321,7 @@
   <header class="rack-header">
     <div>
       <div class="device-id">DOSSIER · BTS SIO — OPTION SISR</div>
-      <h1><span class="dot">●</span> <!--MATHIEU GERAN--><span style="color:var(--text-dim)"> / portfolio de compétences</span></h1>
+      <h1><span class="dot">●</span> Mathieu GERAN<span style="color:var(--text-dim)"> / portfolio de compétences</span></h1>
     </div>
     <div class="status-line"><span class="pulse"></span> session <span class="fill-me" id="session-year">2027</span> — mise à jour continue</div>
   </header>
@@ -317,11 +331,9 @@
     <div class="patch-panel-label">Panneau de brassage — sélectionne un port</div>
     <div class="ports" id="ports">
       <button class="port active" data-tab="accueil"><span class="port-top"><span class="led"></span><span class="num">01</span></span><span class="label">Accueil</span></button>
-      <button class="port" data-tab="bloc1"><span class="port-top"><span class="led"></span><span class="num">02</span></span><span class="label">Bloc 1 — Support</span></button>
-      <button class="port" data-tab="bloc2"><span class="port-top"><span class="led"></span><span class="num">03</span></span><span class="label">Bloc 2 — SISR</span></button>
-      <button class="port" data-tab="bloc3"><span class="port-top"><span class="led"></span><span class="num">04</span></span><span class="label">Bloc 3 — Cybersécurité</span></button>
-      <button class="port" data-tab="stage"><span class="port-top"><span class="led"></span><span class="num">05</span></span><span class="label">Parcours / Stage</span></button>
-      <button class="port" data-tab="veille"><span class="port-top"><span class="led"></span><span class="num">06</span></span><span class="label">Veille techno</span></button>
+      <button class="port" data-tab="realisations"><span class="port-top"><span class="led"></span><span class="num">02</span></span><span class="label">Réalisations pro</span></button>
+      <!-- AJOUT : bouton de l'onglet Veille technologique -->
+      <button class="port" data-tab="veille"><span class="port-top"><span class="led"></span><span class="num">03</span></span><span class="label">Veille techno</span></button>
     </div>
   </nav>
   <div class="cable"></div>
@@ -330,7 +342,7 @@
   <div class="terminal">
     <div class="terminal-bar">
       <span class="dots"><span></span><span></span><span></span></span>
-      <span id="breadcrumb">onmoun@dossier-sio:~/accueil$ cat presentation.md</span>
+      <span id="breadcrumb">dossier-sio:~/accueil$ cat presentation.md</span>
     </div>
     <div class="terminal-body">
 
@@ -343,17 +355,13 @@
         <!--<svg class="topology" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg">
           <line x1="350" y1="95" x2="130" y2="35" stroke="#2b3542" stroke-width="1.5"/>
           <line x1="350" y1="95" x2="130" y2="95" stroke="#2b3542" stroke-width="1.5"/>
-          <line x1="350" y1="95" x2="130" y2="155" stroke="#2b3542" stroke-width="1.5"/>
-          <line x1="350" y1="95" x2="580" y2="95" stroke="#3ecf8e" stroke-width="1.5"/>
+                    <line x1="350" y1="95" x2="580" y2="95" stroke="#3ecf8e" stroke-width="1.5"/>
 
           <circle cx="130" cy="35" r="5" fill="#56b6c2"/>
-          <text x="145" y="39" fill="#8b96a5" font-size="11">Bloc 1 — Support</text>
+          <text x="145" y="39" fill="#8b96a5" font-size="11">Support</text>
 
           <circle cx="130" cy="95" r="5" fill="#56b6c2"/>
-          <text x="145" y="99" fill="#8b96a5" font-size="11">Bloc 2 — SISR</text>
-
-          <circle cx="130" cy="155" r="5" fill="#56b6c2"/>
-          <text x="145" y="159" fill="#8b96a5" font-size="11">Bloc 3 — Cybersécurité</text>
+          <text x="145" y="99" fill="#8b96a5" font-size="11">SISR</text>
 
           <circle cx="350" cy="95" r="8" fill="#12161c" stroke="#e8a33d" stroke-width="2"/>
           <text x="350" y="120" fill="#e8a33d" font-size="11" text-anchor="middle">Situations pro. (stage)</text>
@@ -386,200 +394,154 @@
 
         <h3>Contact</h3>
         <p>
-          <span class="fill-me">[<!--mathieugeran@hotmail.com-->]</span> · <span class="fill-me">[LinkedIn]</span> · <span class="fill-me">[GitHub]</span>
+          <span class="fill-me">[mathieugeran@hotmail.com]</span> · <span class="fill-me">[LinkedIn]</span> · <span class="fill-me">[GitHub]</span>
         </p>
       </section>
 
-      <!-- ============ BLOC 1 ============ -->
-      <section class="tab" id="bloc1">
-        <div class="eyebrow">Port 02 / Bloc de compétences</div>
-        <h2>Support et mise à disposition de services informatiques</h2>
-        <p class="tagline">Bloc commun aux deux options. Il couvre l'accompagnement des utilisateurs, la gestion des incidents/demandes et la mise à disposition de services numériques.</p>
+      <!-- ============ RÉALISATIONS PROFESSIONNELLES ============ -->
+      <!-- AJOUT : remplace les anciens onglets Support (bloc1) et SISR (bloc2) -->
+      <section class="tab" id="realisations">
+        <div class="eyebrow">Port 02 / Réalisations professionnelles</div>
+        <h2>Réalisations professionnelles</h2>
+        <p class="tagline">Les situations concrètes sur lesquelles j'ai travaillé, en entreprise et en formation.</p>
 
-        <div class="note"><strong>À l'oral :</strong> le jury choisit une situation dans ton portfolio, tu la présentes 10 min, puis 30 min d'échange. Prépare 2 à 3 situations solides plutôt que dix superficielles.</div>
+        <!-- Liens vers les deux parties : Professionnel / Formation -->
+        <div class="subtabs">
+          <button class="subtab active" data-sub="pro">Professionnel</button>
+          <button class="subtab" data-sub="formation">Formation</button>
+        </div>
 
-        <h3>Compétences visées</h3>
-        <ul class="comp-list">
-          <li>Répondre aux incidents et aux demandes des utilisateurs</li>
-          <li>Développer la présence en ligne de l'organisation</li>
-          <li>Travailler en mode projet</li>
-          <li>Mettre à disposition des utilisateurs un service informatique</li>
-          <li>Organiser son développement professionnel (veille technologique)</li>
-        </ul>
+        <!-- ---------- PARTIE PROFESSIONNEL ---------- -->
+        <div class="sub-panel active" id="pro">
 
-        <h3>Situations professionnelles</h3>
+          <h3>Stage — Conseil départemental</h3>
 
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Déploiement et configuration de postes téléphoniques IP</span>
-            <span class="card-date fill-me">[date]</span>
+          <!-- AJOUT : contenu déplacé depuis l'ancien onglet Parcours / Stage -->
+          <p class="tagline">Chronologie des missions, du service Micro au service Réseau.</p>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-date fill-me">[semaine X]</div>
+              <div class="tl-title">Service Micro — support de proximité</div>
+              <p>Assistance aux utilisateurs, maintenance de postes de travail, premières interventions terrain.</p>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date fill-me">[semaine X]</div>
+              <div class="tl-title">Transfert vers le Service Réseau</div>
+              <p>Bascule sur les missions d'infrastructure : téléphonie IP, commutateurs, VPN.</p>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date fill-me">[semaine X]</div>
+              <div class="tl-title">Téléphonie IP — OmniVista 8770</div>
+              <p>Configuration et dépannage de postes IP.</p>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date fill-me">[semaine X]</div>
+              <div class="tl-title">Commutation — Aruba HPE 6200F</div>
+              <p>VLAN, port security, diagnostic SSH/mTelnet.</p>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date fill-me">[semaine X]</div>
+              <div class="tl-title">VPN — migration FortiGate</div>
+              <p>Observation de la mise en place des tunnels IPSec.</p>
+            </div>
           </div>
-          <p><strong>Contexte :</strong> intervention sur le parc de téléphonie IP de la collectivité via OmniVista 8770.</p>
-          <p><strong>Activités :</strong> configuration de postes IP, rattachement des lignes, diagnostic de dysfonctionnements signalés par les utilisateurs.</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter : nombre de postes traités, délai de résolution, retour utilisateur]</span></p>
-          <div class="tags"><span class="tag">OmniVista 8770</span><span class="tag">ToIP</span><span class="tag">support N1/N2</span></div>
-        </div>
 
-        <div class="card placeholder">
-          <div class="card-head"><span class="card-title">+ Ajouter une situation (support, incident, documentation, veille…)</span></div>
-          <p>Duplique un bloc <code>.card</code> dans le code source et remplis les 3 champs : Contexte / Activités / Résultat.</p>
-        </div>
-      </section>
+          <h3>Outils et environnement</h3>
+          <ul class="comp-list">
+            <li>Aruba HPE 6200F — CLI AOS-CX</li>
+            <li>Alcatel-Lucent OmniVista 8770</li>
+            <li>FortiGate — VPN IPSec</li>
+            <li>SSH, mTelnet</li>
+          </ul>
 
-      <!-- ============ BLOC 2 ============ -->
-      <section class="tab" id="bloc2">
-        <div class="eyebrow">Port 03 / Bloc de compétences — spécialité</div>
-        <h2>Administration des systèmes et réseaux</h2>
-        <p class="tagline">Bloc spécifique à l'option SISR. C'est ton cœur de métier : conception, déploiement et maintien en condition opérationnelle d'une infrastructure.</p>
+          <h3>Situations professionnelles</h3>
 
-        <div class="note"><strong>À l'oral :</strong> épreuve pratique — préparation puis présentation/mise en situation technique. Les manipulations réelles (CLI, configs) valent plus que la théorie récitée.</div>
-
-        <h3>Compétences visées</h3>
-        <ul class="comp-list">
-          <li>Concevoir une solution d'infrastructure réseau</li>
-          <li>Installer, tester et déployer une solution d'infrastructure</li>
-          <li>Exploiter, dépanner et superviser une infrastructure réseau</li>
-          <li>Gérer le patrimoine informatique (matériel, logiciel, configurations)</li>
-        </ul>
-
-        <h3>Situations professionnelles</h3>
-
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Configuration de commutateurs Aruba HPE 6200F</span>
-            <span class="card-date fill-me">[date]</span>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Déploiement et configuration de postes téléphoniques IP</span>
+              <span class="card-date fill-me">[date]</span>
+            </div>
+            <p><strong>Contexte :</strong> intervention sur le parc de téléphonie IP de la collectivité via OmniVista 8770.</p>
+            <p><strong>Activités :</strong> configuration de postes IP, rattachement des lignes, diagnostic de dysfonctionnements signalés par les utilisateurs.</p>
+            <p><strong>Résultat :</strong> <span class="fill-me">[à compléter : nombre de postes traités, délai de résolution, retour utilisateur]</span></p>
+            <div class="tags"><span class="tag">OmniVista 8770</span><span class="tag">ToIP</span><span class="tag">support N1/N2</span></div>
           </div>
-          <p><strong>Contexte :</strong> déploiement/reconfiguration de switchs Aruba en CLI AOS-CX dans le cadre du service réseau.</p>
-          <p><strong>Activités :</strong> paramétrage des VLAN (modes access/trunk), gestion du VLAN natif, désactivation du routage (<code>no routing</code>), sauvegarde de la configuration (<code>wr mem</code>).</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter : nombre de switchs, site concerné, validation]</span></p>
-          <div class="tags"><span class="tag">Aruba HPE 6200F</span><span class="tag">AOS-CX</span><span class="tag">VLAN</span></div>
-        </div>
 
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Diagnostic de port et sécurité MAC via SSH / mTelnet</span>
-            <span class="card-date fill-me">[date]</span>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Configuration de commutateurs Aruba HPE 6200F</span>
+              <span class="card-date fill-me">[date]</span>
+            </div>
+            <p><strong>Contexte :</strong> déploiement/reconfiguration de switchs Aruba en CLI AOS-CX dans le cadre du service réseau.</p>
+            <p><strong>Activités :</strong> paramétrage des VLAN (modes access/trunk), gestion du VLAN natif, désactivation du routage (<code>no routing</code>), sauvegarde de la configuration (<code>wr mem</code>).</p>
+            <p><strong>Résultat :</strong> <span class="fill-me">[à compléter : nombre de switchs, site concerné, validation]</span></p>
+            <div class="tags"><span class="tag">Aruba HPE 6200F</span><span class="tag">AOS-CX</span><span class="tag">VLAN</span></div>
           </div>
-          <p><strong>Contexte :</strong> incidents de connectivité liés au port security sur des commutateurs en production.</p>
-          <p><strong>Activités :</strong> connexion à distance en SSH et mTelnet, identification des adresses MAC bloquées, correction des règles de port security.</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
-          <div class="tags"><span class="tag">SSH</span><span class="tag">mTelnet</span><span class="tag">port security</span></div>
-        </div>
 
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Observation de la migration VPN vers FortiGate (IPSec)</span>
-            <span class="card-date fill-me">[date]</span>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Diagnostic de port et sécurité MAC via SSH / mTelnet</span>
+              <span class="card-date fill-me">[date]</span>
+            </div>
+            <p><strong>Contexte :</strong> incidents de connectivité liés au port security sur des commutateurs en production.</p>
+            <p><strong>Activités :</strong> connexion à distance en SSH et mTelnet, identification des adresses MAC bloquées, correction des règles de port security.</p>
+            <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
+            <div class="tags"><span class="tag">SSH</span><span class="tag">mTelnet</span><span class="tag">port security</span></div>
           </div>
-          <p><strong>Contexte :</strong> migration de l'infrastructure VPN historique vers des boîtiers FortiGate.</p>
-          <p><strong>Activités :</strong> observation et assistance sur la mise en place des tunnels IPSec, compréhension de l'architecture de sécurité périmétrique.</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
-          <div class="tags"><span class="tag">FortiGate</span><span class="tag">IPSec</span><span class="tag">VPN</span></div>
-        </div>
 
-        <div class="card placeholder">
-          <div class="card-head"><span class="card-title">+ Ajouter une situation (labo Packet Tracer, supervision, câblage…)</span></div>
-          <p>Pense aussi à valoriser tes TP de formation : subnetting, routage statique multi-routeurs, console série sur Cisco Catalyst 3750.</p>
-        </div>
-      </section>
-
-      <!-- ============ BLOC 3 ============ -->
-      <section class="tab" id="bloc3">
-        <div class="eyebrow">Port 04 / Bloc de compétences</div>
-        <h2>Cybersécurité des services informatiques</h2>
-        <p class="tagline">Bloc transversal : protéger la disponibilité, l'intégrité et la confidentialité des services et des données de l'organisation.</p>
-
-        <div class="note"><strong>Fondamentaux à maîtriser :</strong> triade CIA, chiffrement symétrique/asymétrique, HTTPS/certificats, attaques courantes (phishing, injection SQL, XSS, force brute), cadre RGPD/CNIL.</div>
-
-        <h3>Compétences visées</h3>
-        <ul class="comp-list">
-          <li>Garantir la disponibilité, l'intégrité et la confidentialité des services et des données</li>
-          <li>Sécuriser les accès et les échanges</li>
-          <li>Contribuer à la gestion des incidents de sécurité</li>
-          <li>Réaliser une veille sur les menaces et vulnérabilités</li>
-        </ul>
-
-        <h3>Situations professionnelles</h3>
-
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Chiffrement des flux distants — tunnels IPSec</span>
-            <span class="card-date fill-me">[date]</span>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Observation de la migration VPN vers FortiGate (IPSec)</span>
+              <span class="card-date fill-me">[date]</span>
+            </div>
+            <p><strong>Contexte :</strong> migration de l'infrastructure VPN historique vers des boîtiers FortiGate.</p>
+            <p><strong>Activités :</strong> observation et assistance sur la mise en place des tunnels IPSec, compréhension de l'architecture de sécurité périmétrique.</p>
+            <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
+            <div class="tags"><span class="tag">FortiGate</span><span class="tag">IPSec</span><span class="tag">VPN</span></div>
           </div>
-          <p><strong>Contexte :</strong> migration VPN vers FortiGate, avec chiffrement IPSec des flux entre sites.</p>
-          <p><strong>Activités :</strong> compréhension du rôle du chiffrement dans la confidentialité des échanges inter-sites.</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
-          <div class="tags"><span class="tag">IPSec</span><span class="tag">confidentialité</span></div>
-        </div>
 
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">Port security comme mesure anti-intrusion</span>
-            <span class="card-date fill-me">[date]</span>
+          <h3>Entreprise (alternance)</h3>
+
+          <div class="card placeholder">
+            <div class="card-head"><span class="card-title">+ Réalisations en entreprise</span></div>
+            <p>Si tu as une alternance ou un autre stage : duplique un bloc <code>.card</code> ci-dessus et remplis Contexte / Activités / Résultat. Sinon, tu peux supprimer cette partie.</p>
           </div>
-          <p><strong>Contexte :</strong> filtrage par adresse MAC sur les ports des commutateurs Aruba.</p>
-          <p><strong>Activités :</strong> analyse de tentatives de connexion non autorisées, blocage/déblocage de ports.</p>
-          <p><strong>Résultat :</strong> <span class="fill-me">[à compléter]</span></p>
-          <div class="tags"><span class="tag">port security</span><span class="tag">contrôle d'accès</span></div>
         </div>
 
-        <div class="card placeholder">
-          <div class="card-head"><span class="card-title">+ Ajouter une situation (veille sécurité, RGPD, durcissement…)</span></div>
-          <p>Une vraie veille technologique (sources suivies, synthèse rédigée) est très appréciée à l'oral.</p>
+        <!-- ---------- PARTIE FORMATION ---------- -->
+        <div class="sub-panel" id="formation">
+
+          <h3>Travaux pratiques et projets en formation</h3>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title fill-me">[Titre du TP ou du projet]</span>
+              <span class="card-date fill-me">[date]</span>
+            </div>
+            <p><strong>Contexte :</strong> <span class="fill-me">[cours ou module concerné, consigne donnée]</span></p>
+            <p><strong>Activités :</strong> <span class="fill-me">[ce que tu as fait concrètement]</span></p>
+            <p><strong>Résultat :</strong> <span class="fill-me">[ce qui fonctionne, ce que tu as appris]</span></p>
+            <div class="tags"><span class="tag fill-me">[outil]</span><span class="tag fill-me">[technologie]</span></div>
+          </div>
+
+          <div class="card placeholder">
+            <div class="card-head"><span class="card-title">Idées de réalisations en formation</span></div>
+            <p>Labo Packet Tracer (subnetting, VLAN, routage statique multi-routeurs) · Configuration d'un switch Cisco Catalyst 3750 en console série · Installation d'un serveur (Active Directory, DHCP, DNS) · Projet de groupe.</p>
+          </div>
         </div>
       </section>
 
-      <!-- ============ STAGE ============ -->
-      <section class="tab" id="stage">
-        <div class="eyebrow">Port 05 / Parcours de professionnalisation</div>
-        <h2>Stage — Conseil départemental</h2>
-        <p class="tagline">Chronologie des missions, du service Micro au service Réseau.</p>
-
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-date fill-me">[semaine X]</div>
-            <div class="tl-title">Service Micro — support de proximité</div>
-            <p>Assistance aux utilisateurs, maintenance de postes de travail, premières interventions terrain.</p>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date fill-me">[semaine X]</div>
-            <div class="tl-title">Transfert vers le Service Réseau</div>
-            <p>Bascule sur les missions d'infrastructure : téléphonie IP, commutateurs, VPN.</p>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date fill-me">[semaine X]</div>
-            <div class="tl-title">Téléphonie IP — OmniVista 8770</div>
-            <p>Configuration et dépannage de postes IP.</p>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date fill-me">[semaine X]</div>
-            <div class="tl-title">Commutation — Aruba HPE 6200F</div>
-            <p>VLAN, port security, diagnostic SSH/mTelnet.</p>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date fill-me">[semaine X]</div>
-            <div class="tl-title">VPN — migration FortiGate</div>
-            <p>Observation de la mise en place des tunnels IPSec.</p>
-          </div>
-        </div>
-
-        <h3>Outils et environnement</h3>
-        <ul class="comp-list">
-          <li>Aruba HPE 6200F — CLI AOS-CX</li>
-          <li>Alcatel-Lucent OmniVista 8770</li>
-          <li>FortiGate — VPN IPSec</li>
-          <li>SSH, mTelnet</li>
-        </ul>
-      </section>
 
       <!-- ============ VEILLE ============ -->
+      <!-- AJOUT : section complète de l'onglet Veille technologique (jusqu'au </section> de fin) -->
       <section class="tab" id="veille">
-        <div class="eyebrow">Port 06 / Développement professionnel</div>
+        <div class="eyebrow">Port 03 / Développement professionnel</div>
         <h2>Veille technologique</h2>
         <p class="tagline">Suivi régulier de l'actualité d'un sujet technique : sources, méthode de collecte et synthèses rédigées.</p>
 
         <div class="note"><strong>À l'oral :</strong> le jury attend un sujet précis suivi dans la durée, des sources fiables et une capacité à expliquer ce que tu en retiens. Mieux vaut un sujet bien maîtrisé qu'une revue de presse générale.</div>
 
+        <!-- MODIFICATION : sujet de veille « Les cyberattaques en France » -->
         <h3>Sujet de veille</h3>
         <div class="card">
           <div class="card-head">
@@ -587,7 +549,7 @@
             <span class="card-date fill-me">[depuis : mois année]</span>
           </div>
           <p><strong>Problématique :</strong> quelles formes prennent les cyberattaques qui touchent la France, qui en sont les cibles, et comment les organisations peuvent-elles s'en protéger ?</p>
-          <p><strong>Pourquoi ce sujet :</strong> les entreprises, les hôpitaux et les collectivités françaises sont régulièrement victimes d'attaques. Mon stage dans un conseil départemental m'a montré l'importance de la sécurité réseau (VPN IPSec, port security) pour protéger un service public, et ce sujet est au cœur du bloc 3 Cybersécurité.</p>
+          <p><strong>Pourquoi ce sujet :</strong> les entreprises, les hôpitaux et les collectivités françaises sont régulièrement victimes d'attaques. Mon stage dans un conseil départemental m'a montré l'importance de la sécurité réseau (VPN IPSec, port security) pour protéger un service public.</p>
           <div class="tags"><span class="tag">ransomware</span><span class="tag">phishing</span><span class="tag">fuite de données</span><span class="tag">collectivités</span><span class="tag">ANSSI</span></div>
         </div>
 
@@ -595,6 +557,8 @@
           <div class="card-head"><span class="card-title">Axes à suivre</span></div>
           <p>Types d'attaques (rançongiciels, hameçonnage, DDoS, vols de données) · Secteurs ciblés (santé, collectivités, entreprises) · Réponse des autorités (ANSSI, CNIL, directive NIS 2) · Mesures de protection et bonnes pratiques.</p>
         </div>
+
+        <!-- FIN DE LA MODIFICATION du sujet de veille -->
 
         <h3>Méthode et outils</h3>
         <ul class="comp-list">
@@ -662,12 +626,10 @@
   const tabs = document.querySelectorAll('.tab');
   const breadcrumb = document.getElementById('breadcrumb');
   const crumbs = {
-    accueil: 'onmoun@dossier-sio:~/accueil$ cat presentation.md',
-    bloc1: 'onmoun@dossier-sio:~/bloc-1$ cat support-services.md',
-    bloc2: 'onmoun@dossier-sio:~/bloc-2$ cat administration-sisr.md',
-    bloc3: 'onmoun@dossier-sio:~/bloc-3$ cat cybersecurite.md',
-    stage: 'onmoun@dossier-sio:~/stage$ cat conseil-departemental.md',
-    veille: 'onmoun@dossier-sio:~/veille$ cat veille-technologique.md'
+    accueil: 'dossier-sio:~/accueil$ cat presentation.md',
+    realisations: 'dossier-sio:~/realisations$ ls professionnel/ formation/',
+    // AJOUT : texte de la barre du terminal pour l'onglet Veille
+    veille: 'dossier-sio:~/veille$ cat veille-technologique.md'
   };
 
   ports.forEach(port => {
@@ -679,6 +641,17 @@
       document.getElementById(target).classList.add('active');
       breadcrumb.textContent = crumbs[target];
       history.replaceState(null, '', '#' + target);
+    });
+  });
+
+  // AJOUT : bascule entre Professionnel et Formation
+  const subtabs = document.querySelectorAll('.subtab');
+  subtabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      subtabs.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.getAttribute('data-sub')).classList.add('active');
     });
   });
 
